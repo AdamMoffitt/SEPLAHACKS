@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         initializeVariables();
         createOnclickListener();
 
-
+        /*
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     });
 
                     try {
-                        Thread.sleep(100);
+                        Thread.sleep(500);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -79,6 +79,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
         t.start();
+        */
 
     }
 
@@ -228,6 +229,30 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             Toast.makeText(this, "Enter your IP above!", Toast.LENGTH_SHORT).show();
         } else {
             serverAdress = IP_EditText.getText().toString();
+            //DO HERE ---- FALSE CODE
+            Thread t = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    for (int i=0; i<1000000; i++) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                int x = (int)Math.random() % 15;
+                                updateChart(x+" ");
+                            }
+                        });
+
+                        try {
+                            Thread.sleep(500);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+            });
+            t.start();
+
+
         }
     }
 
