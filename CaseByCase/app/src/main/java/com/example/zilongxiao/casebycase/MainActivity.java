@@ -295,7 +295,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
             @Override
             protected void onPostExecute(String s) {
-                if(s.startsWith("ID")){
+                if(s.startsWith("ID:")){
                     int ID = Integer.parseInt(s.substring(s.length()-1));
                     switch(ID){
                         //request eth update
