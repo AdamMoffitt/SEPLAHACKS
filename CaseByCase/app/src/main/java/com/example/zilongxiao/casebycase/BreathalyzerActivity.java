@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.graphics.Color;
@@ -17,9 +18,11 @@ import android.view.MenuItem;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.interfaces.datasets.IPieDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
@@ -45,7 +48,7 @@ public class BreathalyzerActivity extends Activity {
 
         initializeVariables();
         createOnclickListener();
-        initializeUberAPI();
+        //initializeUberAPI();
     }
 
     private void initializeVariables() {
@@ -53,45 +56,14 @@ public class BreathalyzerActivity extends Activity {
         initializePieChart();
     }
 
+
     private void createOnclickListener() {
 
     }
 
-    private void setData(double value) {
-        ArrayList<PieEntry> bacLevel = new ArrayList<>();
-        bacLevel.add(new PieEntry((float) value));
-        bacLevel.add(new PieEntry((float) (1 - value)));
-
-        PieDataSet dataSet = new PieDataSet(bacLevel, "BAC Level");
-        dataSet.setSliceSpace(3f);
-        dataSet.setSelectionShift(5f);
-        dataSet.setColors(ColorTemplate.JOYFUL_COLORS);
-
-        PieData data = new PieData(dataSet);
-        mChart.setData(data);
-        mChart.invalidate();
-
-        /*
-        long currentTimeMillis = System.currentTimeMillis();
-        long updateTimeMillis = System.currentTimeMillis() + 1000;
-        //while (currentTimeMillis < updateTimeMillis) {}
-
-        bacLevel.get(0).setData(new PieEntry((float)0.5));
-        bacLevel.get(1).setData(new PieEntry((float)0.5));
-        PieDataSet dataSet2 = new PieDataSet(bacLevel, "BAC Level");
-        dataSet2.setSliceSpace(3f);
-        dataSet2.setSelectionShift(5f);
-        dataSet2.setColors(ColorTemplate.JOYFUL_COLORS);
-        PieData data2 = new PieData(dataSet2);
-        mChart.setData(data2);
-        mChart.invalidate();
-        */
-
-    }
 
     private void initializePieChart() {
         mChart.setBackgroundColor(Color.WHITE);
-
         mChart.setUsePercentValues(true);
         mChart.getDescription().setEnabled(false);
         mChart.setCenterText("Breathalyzer");
@@ -107,9 +79,72 @@ public class BreathalyzerActivity extends Activity {
         mChart.setRotationAngle(180f);
         mChart.setCenterTextOffset(0, -20);
 
-        setData(0.7);
-        mChart.animateY(1000, Easing.EasingOption.EaseInOutQuad);
+        ArrayList<PieEntry> array = new ArrayList<PieEntry>();
+        array.add(new PieEntry((float) 0.5));
+        array.add(new PieEntry((float)0.3));
+        PieDataSet set = new PieDataSet(array,"beginning");
+        set.setColors(ColorTemplate.JOYFUL_COLORS);
+        PieData pieData = new PieData(set);
+        mChart.setData(pieData);
 
+        //mChart.animateY(1000, Easing.EasingOption.EaseInOutQuad);
+
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                for (int i = 0; i < 20; i++) {
+                    final int finalI = i;
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            addData((float) (finalI));
+                        }
+                    });
+
+                    try {
+                        Thread.sleep(500);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+        });
+
+        t.start();
+    }
+
+    private void addData(float num) {
+        PieData data = mChart.getData();
+
+        if (data != null) {
+            Log.d("debug","Pie Data found");
+            ArrayList<PieEntry> array = new ArrayList<PieEntry>();
+            array.add(new PieEntry(num));
+            array.add(new PieEntry((float) 20));
+            PieDataSet set = new PieDataSet(array,num+"");
+            set.setColors(ColorTemplate.JOYFUL_COLORS);
+
+            data.removeDataSet(0);
+            data.setDataSet(set);
+        }
+
+        Log.d("debug",num+"");
+
+        mChart.notifyDataSetChanged();
+        mChart.invalidate();
+    }
+
+    private PieDataSet createSet() {
+        ArrayList<PieEntry> bacLevel = new ArrayList<>();
+        bacLevel.add(new PieEntry((float) 0));
+        bacLevel.add(new PieEntry((float) 1));
+        PieDataSet dataSet = new PieDataSet(bacLevel, "BAC Level");
+        dataSet.setSliceSpace(3f);
+        dataSet.setSelectionShift(5f);
+        dataSet.setColors(ColorTemplate.JOYFUL_COLORS);
+
+        return dataSet;
     }
 
 
