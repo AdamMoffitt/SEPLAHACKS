@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.MenuItem;
 
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
@@ -37,23 +38,22 @@ public class BreathalyzerActivity extends Activity {
 
         initializeVariables();
         createOnclickListener();
-
-
     }
 
     private void initializeVariables() {
-        tvX = (TextView) findViewById(R.id.tvXMax);
-        tvY = (TextView) findViewById(R.id.tvYMax);
+        //tvX = (TextView) findViewById(R.id.tvXMax);
+        //tvY = (TextView) findViewById(R.id.tvYMax);
 
-        mSeekBarX = (SeekBar) findViewById(R.id.seekBar1);
-        mSeekBarY = (SeekBar) findViewById(R.id.seekBar2);
-        mSeekBarX.setProgress(45);
-        mSeekBarY.setProgress(100);
+        //mSeekBarX = (SeekBar) findViewById(R.id.seekBar1);
+        //mSeekBarY = (SeekBar) findViewById(R.id.seekBar2);
+        //mSeekBarX.setProgress(45);
+        //mSeekBarY.setProgress(100);
 
 
         mChart = (LineChart) findViewById(R.id.chart1);
 
         initializeChart();
+        updateChartRealTime();
     }
 
     private void createOnclickListener() {
@@ -64,36 +64,52 @@ public class BreathalyzerActivity extends Activity {
         ArrayList<Entry> yAxesSin = new ArrayList<>();
         ArrayList<Entry> yAxesCos = new ArrayList<>();
         double x = 0;
-        int numDataPoints = 1000;
+        int numDataPoints = 100;
 
         for (int i=0; i<numDataPoints; i++) {
             float sinFunction = Float.parseFloat(String.valueOf(Math.sin(x)));
             float cosFunction = Float.parseFloat(String.valueOf(Math.cos(x)));
             x = x + 0.1;
-            yAxesSin.add(new Entry(sinFunction,i));
-            yAxesCos.add(new Entry(cosFunction,i));
+            yAxesSin.add(new Entry((float)x,sinFunction+1));
+            yAxesCos.add(new Entry((float)x,cosFunction+1));
             xAxes.add(i,String.valueOf(x));
-        }
-
-        String[] xaxes = new String[xAxes.size()];
-
-        for (int i=0; i<xAxes.size(); i++) {
-            xaxes[i] = xAxes.get(i).toString();
         }
 
 
         ArrayList<ILineDataSet> lineDataSets = new ArrayList<>();
 
-        ILineDataSet lineDataSet1 = new LineDataSet(yAxesCos,"cos");
+        LineDataSet lineDataSet1 = new LineDataSet(yAxesCos,"cos");
         //lineDataSet1.setDrawCircles(false);
+        lineDataSet1.setColors(Color.BLUE);
         lineDataSet1.setValueTextColor(Color.BLUE);
 
+        LineDataSet lineDataSet2 = new LineDataSet(yAxesSin,"sin");
+        lineDataSet1.setDrawCircles(false);
+        lineDataSet1.setColors(Color.RED);
+        lineDataSet1.setValueTextColor(Color.RED);
+        lineDataSet1.setDrawFilled(true);
+
         lineDataSets.add(lineDataSet1);
+        lineDataSets.add(lineDataSet2);
+
 
         mChart.setData(new LineData (lineDataSets));
         mChart.setVisibleXRangeMaximum(65f);
+        mChart.animateX(3000);
 
+        /*
+        for (int i=0; i<50; i++) {
+            float cosFunction = Float.parseFloat(String.valueOf(Math.cos(x)));
+            x = x+0.1;
+            lineDataSet1.addEntry(new Entry((float)x, cosFunction+1));
+        }
+        lineDataSet1.notifyDataSetChanged();
+        mChart.notifyDataSetChanged();
+        mChart.invalidate();
+        */
     }
 
+    private void updateChartRealTime() {
+    }
 
 }
