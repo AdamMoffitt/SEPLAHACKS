@@ -91,10 +91,16 @@ public class BreathalyzerActivity extends Activity {
         mChart.setCenterTextOffset(0, -20);
 
         setData(0.7);
+        mChart.animateY(1000, Easing.EasingOption.EaseInOutQuad);
 
-        mChart.animateY(5000, Easing.EasingOption.EaseInOutQuad);
+        long currentTimeMillis = System.currentTimeMillis();
+        long updateTimeMillis = System.currentTimeMillis() + 1000;
+        while (currentTimeMillis < updateTimeMillis) {}
+        setData(0.5);
+        mChart.animateY(1000, Easing.EasingOption.EaseInOutQuad);
     }
 
+    /*
     private void initializeUberAPI(){
         Context context = this;
         try {
@@ -113,4 +119,5 @@ public class BreathalyzerActivity extends Activity {
             startActivity(i);
         }
     }
+    */
 }
