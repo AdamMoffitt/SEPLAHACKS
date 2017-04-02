@@ -16,7 +16,8 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Choose your module down there: " />
+        android:text="Choose your module down there: "
+        android:id="@+id/textView"/>
 
     <Button
         android:text="Breathalyzer"
@@ -28,13 +29,24 @@
         android:layout_marginTop="42dp"
         android:id="@+id/BreathalyzerButton" />
 
+
+    <EditText
+        android:id="@+id/ip_et"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/BreathalyzerButton"/>
     <Button
-        android:text="Air Quality"
+        android:id="@+id/btn_setIp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/BreathalyzerButton"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="30dp"
-        android:id="@+id/AirQualityButton" />
+        android:layout_below="@id/ip_et"
+        android:text="set ip"/>
+
+    <com.github.mikephil.charting.charts.LineChart
+        android:id="@+id/chart1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/btn_setIp"/>
+
+
 </RelativeLayout>

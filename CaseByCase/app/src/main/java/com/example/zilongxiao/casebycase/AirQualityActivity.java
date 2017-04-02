@@ -3,6 +3,8 @@ package com.example.zilongxiao.casebycase;
 import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
@@ -22,6 +24,7 @@ public class AirQualityActivity extends Activity {
 
 
     private LineChart mChart;
+    private Button startButton;
 
 
     @Override
@@ -38,12 +41,18 @@ public class AirQualityActivity extends Activity {
     private void initializeVariables() {
 
         mChart = (LineChart) findViewById(R.id.chart1);
+        startButton = (Button) findViewById(R.id.StartButton);
 
         initializeChart();
         updateChartRealTime();
     }
 
     private void createOnclickListener() {
+        startButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+            }
+        });
     }
 
     private void initializeChart() {
