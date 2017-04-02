@@ -4,10 +4,11 @@
     android:layout_height="match_parent"
     android:id="@+id/breathalyzerLayout">
 
-    <com.github.mikephil.charting.charts.LineChart
-        android:id="@+id/chart1"
+
+    <com.github.mikephil.charting.charts.PieChart
+        android:id="@+id/chart2"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/seekBar1" />
+        android:layout_height="match_parent" />
+
 
 </RelativeLayout>
