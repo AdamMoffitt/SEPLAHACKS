@@ -7,6 +7,8 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.graphics.Color;
@@ -41,6 +43,9 @@ import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 public class BreathalyzerActivity extends Activity {
 
     private PieChart mChart;
+    private Button uberButton;
+    private TextView uberTextView;
+
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,17 +53,23 @@ public class BreathalyzerActivity extends Activity {
 
         initializeVariables();
         createOnclickListener();
-        //initializeUberAPI();
     }
 
     private void initializeVariables() {
+        uberButton = (Button) findViewById(R.id.UberButton);
+        uberTextView = (TextView) findViewById(R.id.UberTextView);
         mChart = (PieChart) findViewById(R.id.chart2);
         initializePieChart();
     }
 
 
     private void createOnclickListener() {
-
+        uberButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                initializeUberAPI();
+            }
+        });
     }
 
 
@@ -135,21 +146,8 @@ public class BreathalyzerActivity extends Activity {
         mChart.invalidate();
     }
 
-    private PieDataSet createSet() {
-        ArrayList<PieEntry> bacLevel = new ArrayList<>();
-        bacLevel.add(new PieEntry((float) 0));
-        bacLevel.add(new PieEntry((float) 1));
-        PieDataSet dataSet = new PieDataSet(bacLevel, "BAC Level");
-        dataSet.setSliceSpace(3f);
-        dataSet.setSelectionShift(5f);
-        dataSet.setColors(ColorTemplate.JOYFUL_COLORS);
-
-        return dataSet;
-    }
-
 
     private void initializeUberAPI(){
-        /*
         Context context = this;
         try {
             PackageManager pm = context.getPackageManager();
@@ -166,7 +164,6 @@ public class BreathalyzerActivity extends Activity {
             i.setData(Uri.parse(url));
             startActivity(i);
         }
-        */
     }
 
 }
