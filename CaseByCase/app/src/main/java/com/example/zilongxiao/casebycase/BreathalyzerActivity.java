@@ -14,8 +14,12 @@ import java.util.ArrayList;
 import android.view.MenuItem;
 import android.view.MenuItem;
 
+import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
@@ -45,7 +49,7 @@ public class BreathalyzerActivity extends Activity {
     }
 
     private void initializeVariables() {
-        mChart = (PieChart) findViewById(R.id.chart1);
+        mChart = (PieChart) findViewById(R.id.chart2);
         initializePieChart();
     }
 
@@ -53,11 +57,42 @@ public class BreathalyzerActivity extends Activity {
 
     }
 
+    private void setData(double value) {
+        ArrayList<PieEntry> bacLevel = new ArrayList<>();
+        bacLevel.add(new PieEntry((float) value));
+        bacLevel.add(new PieEntry((float) (1 - value)));
+
+        PieDataSet dataSet = new PieDataSet(bacLevel, "BAC Level");
+        dataSet.setSliceSpace(3f);
+        dataSet.setSelectionShift(5f);
+        dataSet.setColors(ColorTemplate.JOYFUL_COLORS);
+
+        PieData data = new PieData(dataSet);
+        mChart.setData(data);
+        mChart.invalidate();
+    }
+
     private void initializePieChart() {
         mChart.setBackgroundColor(Color.WHITE);
 
         mChart.setUsePercentValues(true);
         mChart.getDescription().setEnabled(false);
+        mChart.setCenterText("Breathalyzer");
+        mChart.setDrawHoleEnabled(true);
+        mChart.setHoleColor(Color.WHITE);
+        mChart.setTransparentCircleColor(Color.WHITE);
+        mChart.setHoleRadius(58f);
+        mChart.setTransparentCircleRadius(61f);
+        mChart.setDrawCenterText(true);
+        mChart.setRotationEnabled(false);
+        mChart.setHighlightPerTapEnabled(false);
+        mChart.setMaxAngle(180f); // HALF CHART
+        mChart.setRotationAngle(180f);
+        mChart.setCenterTextOffset(0, -20);
+
+        setData(0.7);
+
+        mChart.animateY(5000, Easing.EasingOption.EaseInOutQuad);
     }
 
     private void initializeUberAPI(){
