@@ -70,6 +70,23 @@ public class BreathalyzerActivity extends Activity {
         PieData data = new PieData(dataSet);
         mChart.setData(data);
         mChart.invalidate();
+
+        /*
+        long currentTimeMillis = System.currentTimeMillis();
+        long updateTimeMillis = System.currentTimeMillis() + 1000;
+        //while (currentTimeMillis < updateTimeMillis) {}
+
+        bacLevel.get(0).setData(new PieEntry((float)0.5));
+        bacLevel.get(1).setData(new PieEntry((float)0.5));
+        PieDataSet dataSet2 = new PieDataSet(bacLevel, "BAC Level");
+        dataSet2.setSliceSpace(3f);
+        dataSet2.setSelectionShift(5f);
+        dataSet2.setColors(ColorTemplate.JOYFUL_COLORS);
+        PieData data2 = new PieData(dataSet2);
+        mChart.setData(data2);
+        mChart.invalidate();
+        */
+
     }
 
     private void initializePieChart() {
@@ -93,15 +110,11 @@ public class BreathalyzerActivity extends Activity {
         setData(0.7);
         mChart.animateY(1000, Easing.EasingOption.EaseInOutQuad);
 
-        long currentTimeMillis = System.currentTimeMillis();
-        long updateTimeMillis = System.currentTimeMillis() + 1000;
-        while (currentTimeMillis < updateTimeMillis) {}
-        setData(0.5);
-        mChart.animateY(1000, Easing.EasingOption.EaseInOutQuad);
     }
 
-    /*
+
     private void initializeUberAPI(){
+        /*
         Context context = this;
         try {
             PackageManager pm = context.getPackageManager();
@@ -118,6 +131,7 @@ public class BreathalyzerActivity extends Activity {
             i.setData(Uri.parse(url));
             startActivity(i);
         }
+        */
     }
-    */
+
 }
